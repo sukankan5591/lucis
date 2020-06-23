@@ -50,3 +50,11 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+#project tmp file
+tags
+halo
+land
+*.swp
+*.rpm
+*.deb
