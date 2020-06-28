@@ -8,24 +8,34 @@ Reverse Control
 
 # Install 
 ```
-    git clone https://github.com/sukankan5591/lucis.git
-    make
+    $ git clone https://github.com/sukankan5591/lucis.git
+    $ make
 ```
 
 # Usage
     运行每个程序使用-h选项，获取帮助信息.
 
 # Example
-首先运行服务器端(本端要能够被客户端连接,例如和客户端在同一局域网内或拥有公网IP)并指定监听一个网络端口:
+以多IP主机为例:  
+服务器IP:  
+    A.A.A.A  
+    B.B.B.B  
+客户端IP:  
+    C.C.C.C  
+    D.D.D.D  
 
-**land -p 8000**  (如果端口号小于1024需要有相应权限)
+首先运行服务器端(本端要能够被客户端连接,例如和客户端属同一局域网或拥有公网IP)并指定监听一个网络端口:
 
-然后运行客户端:
-**halo -s <服务器IP> -p 8000**
-如果客户端主机有多个IP,可指定使用的本机IP或绑定的端口,也可同时都指定(默认使用主机默认路由IP)
+**land -p 8000**  (如果端口号小于1024需要有相应权限)  
+此时land程序监听主机的 **8000** 端口,从任意IP访问的连接都会接受，如果只想要监听一个IP:  
+**land -l A.A.A.A -p 8000**  (或指定另一个IP)  
+
+然后运行客户端:  
+**halo -s A.A.A.A -p 8000**  
+如果客户端主机有多个IP,可指定使用的本机IP或绑定的端口,也可同时都指定(默认使用主机默认路由IP)  
 
 # BUG
-+ 子进程运行的shell以有效用户ID从用户信息中获取(**see getpwuid(3) **)，如果用户不支持shell(**/usr/sbin/nologin** or **/bin/false**)，运行可能不会成功
++ 子进程运行的shell以有效用户ID从用户信息中获取(**see getpwuid(3)**)，如果用户不支持shell( **/usr/sbin/nologin** or **/bin/false** )，运行可能不会成功
 + 使用本程序登录的系统使用***who***或***w***命令无法被查看到
 
 # Todo
@@ -36,3 +46,6 @@ Reverse Control
 # Change Log
 1.0.0  (2020-06-23)
 第一个可用版本发布
+1.1.0  (2020-06-28)
+添加子Shell若干环境变量BUG
+

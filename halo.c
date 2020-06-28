@@ -23,6 +23,7 @@
 
 #include "comm.h"
 #include "comm_halo.h"
+#include "env_halo.h"
 
 #define     OPTIONS      "l:t:s:p:hv" 
 
@@ -151,8 +152,10 @@ int main(int argc, char *argv[])
     {
         struct passwd *pwd;
         pwd = getpwuid(geteuid());
+        handle_env(pwd);
         chdir(pwd->pw_dir);
-        execl(pwd->pw_shell, basename(pwd->pw_shell), NULL);
+        char *argv[] = {basename(pwd->pw_shell), NULL};
+        execve(pwd->pw_shell, argv, halo_env);
         exit(-1);
     }
     
