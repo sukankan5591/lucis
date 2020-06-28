@@ -18,11 +18,11 @@ Reverse Control
 # Example
 以多IP主机为例:  
 服务器IP:  
-    A.A.A.A  
-    B.B.B.B  
+&emsp    A.A.A.A  
+&emsp    B.B.B.B  
 客户端IP:  
-    C.C.C.C  
-    D.D.D.D  
+&emsp    C.C.C.C  
+&emsp    D.D.D.D  
 
 首先运行服务器端(本端要能够被客户端连接,例如和客户端属同一局域网或拥有公网IP)并指定监听一个网络端口:
 
@@ -45,7 +45,7 @@ Reverse Control
 
 # Change Log
 1.0.0  (2020-06-23)
-第一个可用版本发布
+第一个可用版本发布  
 1.1.0  (2020-06-28)
 添加子Shell若干环境变量BUG
 
