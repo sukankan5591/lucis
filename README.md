@@ -18,11 +18,11 @@ Reverse Control
 # Example
 以多IP主机为例:  
 服务器IP:  
-&emsp;    A.A.A.A  
-&emsp;    B.B.B.B  
+&emsp;&emsp; A.A.A.A  
+&emsp;&emsp; B.B.B.B  
 客户端IP:  
-&emsp;    C.C.C.C  
-&emsp;    D.D.D.D  
+&emsp;&emsp; C.C.C.C  
+&emsp;&emsp; D.D.D.D  
 
 首先运行服务器端(本端要能够被客户端连接,例如和客户端属同一局域网或拥有公网IP)并指定监听一个网络端口:
 
@@ -32,20 +32,23 @@ Reverse Control
 
 然后运行客户端:  
 **halo -s A.A.A.A -p 8000**  
-如果客户端主机有多个IP,可指定使用的本机IP或绑定的端口,也可同时都指定(默认使用主机默认路由IP)  
+如果客户端主机有多个IP,可指定使用的本机IP或绑定的端口,  
+也可同时都指定(默认使用主机默认路由IP):  
+**halo -l C.C.C.C -s A.A.A.A -p 8000**    (指定使用本机的C.C.C.C地址)  
+**halo -t 49152   -s A.A.A.A -p 8000**    (指定使用本机的49152端口)  
+**halo -l C.C.C.C -t 49152 -s A.A.A.A -p 8000**   (同时指定使用本机的C.C.C.C地址和49152端口)  
 
 # BUG
-+ 子进程运行的shell以有效用户ID从用户信息中获取(**see getpwuid(3)**)，如果用户不支持shell( **/usr/sbin/nologin** or **/bin/false** )，运行可能不会成功
-+ 使用本程序登录的系统使用***who***或***w***命令无法被查看到
++ 子进程运行的shell以有效用户ID从用户信息中获取(**see getpwuid(3)**)，如果用户不支持shell( **/usr/sbin/nologin** or **/bin/false** )，运行可能不会成功  
++ 使用本程序登录的系统使用***who***或***w***命令无法被查看到  
 
 # Todo
-+ 支持域名解析
-
-+ 指定运行任意程序
++ 支持域名解析  
++ 指定运行任意程序  
 
 # Change Log
-1.0.0  (2020-06-23)
+1.0.0  (2020-06-23)  
 第一个可用版本发布  
-1.1.0  (2020-06-28)
-添加子Shell若干环境变量BUG
+1.1.0  (2020-06-28)  
+添加子Shell若干环境变量  
 
