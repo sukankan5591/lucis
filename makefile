@@ -3,7 +3,7 @@ CFLAGS=-Wall -std=gnu99 -pthread -static
 
 all: halo land
 
-halo: halo.o comm_halo.o env_halo.o
+halo: halo.o comm_halo.o env_halo.o domain_halo.o
 	$(CC) $(CFLAGS) $^ -o $@
 	strip halo
 
