@@ -9,6 +9,7 @@ Reverse Control
 # Install 
 ```
     $ git clone https://github.com/sukankan5591/lucis.git
+    $ cd lucis
     $ make
 ```
 
@@ -39,16 +40,13 @@ Reverse Control
 **halo -l C.C.C.C -t 49152 -s A.A.A.A -p 8000**   (同时指定使用本机的C.C.C.C地址和49152端口)  
 
 # BUG
-+ 子进程运行的shell以有效用户ID从用户信息中获取(**see getpwuid(3)**)，如果用户不支持shell( **/usr/sbin/nologin** or **/bin/false** )，运行可能不会成功  
++ 子进程运行的shell以有效用户ID从用户信息中获取(**see getpwuid(3)**)，如果用户不支持shell( **/usr/sbin/nologin** or **/bin/false** )，运行不会成功  
 + 使用本程序登录的系统使用***who***或***w***命令无法被查看到  
-
-# Todo
-+ 支持域名解析  
-+ 指定运行任意程序  
 
 # Change Log
 1.0.0  (2020-06-23)  
-第一个可用版本发布  
+第一个可用版本发布   
 1.1.0  (2020-06-28)  
 添加子Shell若干环境变量  
-
+1.2.0  (2020-07-03)  
+支持域名解析 (随机选取,使用可连接的第一个IP，且不保证顺序)   

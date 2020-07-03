@@ -24,6 +24,7 @@
 #include "comm.h"
 #include "comm_halo.h"
 #include "env_halo.h"
+#include "domain_halo.h"
 
 #define     OPTIONS      "l:t:s:p:hv" 
 
@@ -41,6 +42,7 @@ int main(int argc, char *argv[])
     char            slave_name[20];
     pthread_t       ptos, stop;
     pthread_attr_t  attr;
+    struct ipset_t  server_buf;
     int ret, ch, on = 1;
     wsize.ws_row    = 24;
     wsize.ws_col    = 80;
@@ -61,19 +63,26 @@ int main(int argc, char *argv[])
 		{
 			case 'l': 
                 strncpy(loc_ip, optarg, sizeof(loc_ip));
-                islocip_seted =1;
+                islocip_seted = inet_aton(loc_ip, NULL);;
                 break;
 			case 't': 
                 strncpy(loc_port, optarg, sizeof(loc_port));
-                islocport_seted = 1;
+                if ((atoi(loc_port) > 0) && (atoi(loc_port) <= 65535))
+                    islocport_seted = 1;
+                else
+                    islocport_seted = 0;
                 break;
 			case 's': 
                 strncpy(ser_ip, optarg, sizeof(ser_ip));
-                iserip_seted = 1;
+                bzero(&server_buf, sizeof(server_buf));
+                iserip_seted = domain(ser_ip, &server_buf);
                 break;
 			case 'p': 
                 strncpy(ser_port, optarg, sizeof(ser_port));
-                iserport_seted = 1;
+                if ((atoi(ser_port) > 0) && (atoi(ser_port) <= 65535))
+                    iserport_seted = 1;
+                else
+                    iserport_seted = 0;
                 break;
 			case 'h': 
                 usage(basename(argv[0]));
@@ -89,6 +98,12 @@ int main(int argc, char *argv[])
 		}
 	}
     
+    if(!(iserip_seted && iserport_seted))
+    {
+        usage(basename(argv[0]));
+        exit(1);
+    }
+    
     signal(SIGHUP,  SIG_IGN);
     signal(SIGINT,  sig_exit);
     signal(SIGQUIT, sig_exit);
@@ -98,49 +113,54 @@ int main(int argc, char *argv[])
     signal(SIGTSTP, SIG_IGN);
     signal(SIGTTIN, SIG_IGN);
     signal(SIGTTOU, SIG_IGN);
-    
 
     memset((char *)&seraddr, 0, sizeof(seraddr));
     memset((char *)&locaddr, 0, sizeof(locaddr));
     seraddr.sin_family = AF_INET;
     locaddr.sin_family = AF_INET;
 
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if(sockfd == -1)
-        perror("socket"),exit(1);
-    
-    if(!(iserip_seted && iserport_seted))
+    for(int i=0; i< server_buf.count; i++)
     {
-        usage(basename(argv[0]));
-        exit(1);
-    }
-    
-    inet_pton(AF_INET, ser_ip, &seraddr.sin_addr);
-    seraddr.sin_port = htons((unsigned short)atoi(ser_port));
-
-    if(islocip_seted)
-        inet_pton(AF_INET, loc_ip, &locaddr.sin_addr);
-    if(islocport_seted)
-        locaddr.sin_port = htons((unsigned short)atoi(loc_port));
-
-    if(islocip_seted || islocport_seted)
-    {
-        ret = bind(sockfd, (struct sockaddr *)&locaddr, sizeof(locaddr));
-        if(ret != 0)
-        {  
-            perror("bind");
-            usage(basename(argv[0]));
-            exit(1);
+        sockfd = socket(AF_INET, SOCK_STREAM, 0);
+        if(sockfd == -1)
+            perror("socket"),exit(1);
+        
+        if(islocip_seted)
+            inet_pton(AF_INET, loc_ip, &locaddr.sin_addr);
+        if(islocport_seted)
+            locaddr.sin_port = htons((unsigned short)atoi(loc_port));
+        if(islocip_seted || islocport_seted)
+        {
+            ret = bind(sockfd, (struct sockaddr *)&locaddr, sizeof(locaddr));
+            if(ret != 0)
+            {  
+                close(sockfd);
+                perror("bind");
+                usage(basename(argv[0]));
+                exit(1);
+            }
         }
+        setsockopt(sockfd, SOL_SOCKET,  SO_REUSEADDR, &on, sizeof(on));
+        setsockopt(sockfd, SOL_SOCKET,  SO_KEEPALIVE, &on, sizeof(on));
+        setsockopt(sockfd, IPPROTO_TCP, TCP_NODELAY,  &on, sizeof(on));
+
+        seraddr.sin_addr.s_addr = ((struct in_addr *)(server_buf.array[i]))->s_addr;
+        seraddr.sin_port        = htons((unsigned short)atoi(ser_port));
+        
+        ret = connect(sockfd, (struct sockaddr *)&seraddr, sizeof(seraddr));
+        if(ret != 0)
+        {
+            close(sockfd);
+            continue;
+        }
+        else
+            break;
     }
 
-    setsockopt(sockfd, SOL_SOCKET,  SO_REUSEADDR, &on, sizeof(on));
-    setsockopt(sockfd, IPPROTO_TCP, TCP_NODELAY,  &on, sizeof(on));
-
-    ret = connect(sockfd, (struct sockaddr *)&seraddr, sizeof(seraddr));
-    if(ret != 0)
+    if(ret == -1)
     {
-        perror("connect");
+        printf("Can not Connect To Server\n");
+        close(sockfd);
         exit(1);
     }
 
