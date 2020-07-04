@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -std=gnu99 -O2 -pthread -static
+CFLAGS=-Wall -std=gnu99 -pthread -static
 
 all: halo land
 

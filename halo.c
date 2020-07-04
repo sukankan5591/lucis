@@ -156,7 +156,7 @@ int main(int argc, char *argv[])
         else
             break;
     }
-    resolve_free(server_buf);
+    resolve_free(&server_buf);
 
     if(ret == -1)
     {
