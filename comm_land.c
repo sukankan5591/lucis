@@ -127,6 +127,7 @@ void sig_pipe(int signo)
     exit(127);
 }
 
+
 void *stdin_to_sock(void *args)
 {
     int nread;
@@ -167,8 +168,8 @@ void usage(const char *name)
 {
     printf(
     "usage: %s [-l ip] -p <port>\n"
-    "    -l  specify bound native host IP\n"
-    "    -p  specify listen port\n"
+    "    -l  bind local IP address\n"
+    "    -p  listen port\n"
     "    -h  display this help\n"
     "    -v  show version\n", name);
 }

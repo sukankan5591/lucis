@@ -10,7 +10,7 @@
 #include "domain_halo.h"
 
 
-int domain(const char *name, struct ipset_t *buf)
+int resolve_domain(const char *name, struct ipset_t *buf)
 {
     char **pptr;
     struct hostent *hptr = NULL;
@@ -53,4 +53,21 @@ int domain(const char *name, struct ipset_t *buf)
     }
 
     return buf->count;
+}
+
+
+void resolve_free(struct ipset_t *buf)
+{
+    int i;
+
+    if(buf->array == NULL)
+        return;
+
+    for(i=0; i < buf->count; i++)
+    {
+        free(buf->array[i]);
+        buf->array[i] = NULL;
+    }
+    free(buf->array);
+    buf->array = NULL;
 }

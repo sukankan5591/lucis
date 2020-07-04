@@ -7,8 +7,6 @@ typedef struct ipset_t {
 }ipset_t;
 
 
-int domain(const char *name, struct ipset_t *buf);
-
 /*
    count: number of how many IP resolved, if parameter(name) is
           already a legal IP addr, count = 1;
@@ -22,9 +20,11 @@ array: --> [0] --> struct in_addr{}
 }          [1] --> struct in_addr{}
            [2] --> struct in_addr{}
 
-this function use malloc, need to pay attention to release memory to 
-avoid memory leak when running the program multiple times 
-
+this function use malloc, need to pay attention to release memory 
+to avoid memory leak when running the program multiple times 
 */
+
+int  resolve_domain(const char *name, struct ipset_t *buf);
+void resolve_free(struct ipset_t *buf);
 
 #endif

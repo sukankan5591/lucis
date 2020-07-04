@@ -12,7 +12,7 @@ typedef struct cmd_t{
 #define    SET_KEY        0x01
 #define    SET_WINDOW     0x02
 
-#define    VERSION        "1.2.0"
+#define    VERSION        "1.2.2"
 #define    BUFSIZE        1024
 
 #endif

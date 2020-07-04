@@ -226,10 +226,10 @@ void usage(const char *name)
 {
     printf(
     "usage: %s [-l ip] [-t port] -s <ip> -p <port>\n"
-    "    -l  specify the bound local IP\n"
-    "    -t  specify the bound local port\n"
-    "    -s  specify the remote IP of server\n"
-    "    -p  specify the connected remote port\n"
+    "    -l  bind local IP address\n"
+    "    -t  bind local port\n"
+    "    -s  remote IP or domain name\n"
+    "    -p  remote host port\n"
     "    -h  display this help\n"
     "    -v  show version\n", name);
 }

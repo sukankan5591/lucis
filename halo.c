@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     pthread_t       ptos, stop;
     pthread_attr_t  attr;
     struct ipset_t  server_buf;
-    int ret, ch, on = 1;
+    int ret = -1, ch, on = 1;
     wsize.ws_row    = 24;
     wsize.ws_col    = 80;
 
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 			case 's': 
                 strncpy(ser_ip, optarg, sizeof(ser_ip));
                 bzero(&server_buf, sizeof(server_buf));
-                iserip_seted = domain(ser_ip, &server_buf);
+                iserip_seted = resolve_domain(ser_ip, &server_buf);
                 break;
 			case 'p': 
                 strncpy(ser_port, optarg, sizeof(ser_port));
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
     seraddr.sin_family = AF_INET;
     locaddr.sin_family = AF_INET;
 
-    for(int i=0; i< server_buf.count; i++)
+    for(int i=0; i < server_buf.count; i++)
     {
         sockfd = socket(AF_INET, SOCK_STREAM, 0);
         if(sockfd == -1)
@@ -156,6 +156,7 @@ int main(int argc, char *argv[])
         else
             break;
     }
+    resolve_free(server_buf);
 
     if(ret == -1)
     {
@@ -163,7 +164,7 @@ int main(int argc, char *argv[])
         close(sockfd);
         exit(1);
     }
-
+    
     pid = pty_fork(&ptyfd, slave_name, sizeof(slave_name), NULL, &wsize);
     
     if(pid < 0)
