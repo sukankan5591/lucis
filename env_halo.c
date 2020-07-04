@@ -53,6 +53,7 @@ void set_env_SHELL(const char *str)
     strncpy(SHELL+6, str, SHELL_SIZE);
 }
 
+
 void set_env_PWD(const char *str)
 {
     strncpy(PWD+4, str, PWD_SIZE);

@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -std=gnu99 -pthread -static
+CFLAGS=-Wall -std=gnu99 -O2 -pthread -static
 
 all: halo land
 
@@ -15,5 +15,5 @@ land: land.o comm_land.o
 	$(CC) $(CFLAGS) -c $^ -o $@
 	
 clean:
-	rm -f *.o *.rpm halo land
+	rm -f *.o *.rpm *.deb halo land
 
