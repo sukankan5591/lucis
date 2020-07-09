@@ -87,6 +87,7 @@ int main(int argc, char *argv[])
 
     addr_len = sizeof(seraddr);
     setsockopt(listenfd, SOL_SOCKET,  SO_REUSEADDR, &on, sizeof(on));
+    setsockopt(listenfd, SOL_SOCKET,  SO_KEEPALIVE, &on, sizeof(on));
     setsockopt(listenfd, IPPROTO_TCP, TCP_NODELAY,  &on, sizeof(on));
     
     seraddr.sin_family = AF_INET;
