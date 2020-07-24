@@ -6,7 +6,7 @@
 #define     LOGNAME_SIZE            40
 #define     PWD_SIZE                4096
 
-static char HISTCONTROL[]         = "HISTCONTROL=ignoredups:ignorespace:erasedups";
+static char HISTCONTROL[]         = "HISTCONTROL=ignoredups:ignorespace";
 static char HISTSIZE[]            = "HISTSIZE=1000";
 static char HOME[HOME_SIZE]       = "HOME=";
 static char HOSTNAME[]            = "HOSTNAME=localhost";
