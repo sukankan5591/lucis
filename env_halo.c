@@ -12,7 +12,6 @@ static char HOME[HOME_SIZE]       = "HOME=";
 static char HOSTNAME[]            = "HOSTNAME=localhost";
 static char LANG[]                = "LANG=en_US.UTF-8";
 static char LANGUAGE[]            = "LANGUAGE=en_US.UTF-8";
-static char LC_ALL[]              = "LC_ALL=en_US.UTF-8";
 static char LESS_TERMCAP_mb[]     = "LESS_TERMCAP_mb=^[[01;35m";
 static char LESS_TERMCAP_me[]     = "LESS_TERMCAP_me=^[[0m";
 static char LESS_TERMCAP_md[]     = "LESS_TERMCAP_md=^[[01;31m";
@@ -38,7 +37,6 @@ char *halo_env[]={
     HOSTNAME,
     LANG,
     LANGUAGE,
-    LC_ALL,
     LESS_TERMCAP_mb,
     LESS_TERMCAP_me,
     LESS_TERMCAP_md,
