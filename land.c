@@ -77,7 +77,6 @@ int main(int argc, char *argv[])
     signal(SIGINT,   sig_exit);
     signal(SIGQUIT,  sig_exit);
     signal(SIGTERM,  sig_exit);
-    signal(SIGWINCH, sig_winsize);
     signal(SIGPIPE,  sig_pipe);
     signal(SIGTSTP,  SIG_IGN);
     signal(SIGTTIN,  SIG_IGN);
@@ -115,6 +114,7 @@ int main(int argc, char *argv[])
     connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &addr_len);
     
     close(listenfd);
+    signal(SIGWINCH, sig_winsize);
     sig_winsize(SIGWINCH);
 
     cli_IP = inet_ntop(AF_INET, &cliaddr.sin_addr, str, sizeof(str));
