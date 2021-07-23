@@ -45,7 +45,10 @@ int main(int argc, char *argv[])
     
 
     if(!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO))
-        printf("stdin or stdout not tty\n"),exit(-1);
+    {
+        printf("stdin or stdout not tty\n");
+        exit(-1);
+    }
 
 	while((ch = getopt(argc, argv, OPTIONS))!= -1)
 	{

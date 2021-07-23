@@ -1,14 +1,15 @@
 CC=gcc
-CFLAGS=-Wall -std=gnu99 -pthread -static
+CFLAGS=-Wall -std=gnu99 -static
+LDFLAGS=-lpthread
 
 all: halo land
 
 halo: halo.o comm_halo.o env_halo.o domain_halo.o
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $^ $(LDFLAGS) -o $@
 	strip halo
 
 land: land.o comm_land.o
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $^ $(LDFLAGS) -o $@
 	strip land
 
 %.o:%.c
